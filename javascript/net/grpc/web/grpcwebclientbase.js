@@ -264,12 +264,12 @@ class GrpcWebClientBase {
       });
     }
 
-    stream.on('end', function() {
+    stream.on('end', function(status) {
       if (!errorEmitted) {
         if (!isResponseReceived) {
           callback({
-            code: StatusCode.UNKNOWN,
-            message: 'Incomplete response',
+            code: status.code || StatusCode.UNKNOWN,
+            message: status.metadata || 'Incomplete response',
           });
         } else {
           callback(null, responseReceived);
